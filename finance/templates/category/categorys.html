@@ -1,0 +1,166 @@
+{% extends 'finance.html' %} 
+{% load static %} 
+{% block content %} 
+{% include 'header.html' %} 
+{% include 'asidebar.html' %}
+
+<main id="main" class="main">
+  <div class="pagetitle">
+    <h1>Mes categories</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="index.html">Finance</a></li>
+        <li class="breadcrumb-item">Categorie</li>
+        {% comment %}
+        <li class="breadcrumb-item active">Ajouter</li>
+        {% endcomment %}
+      </ol>
+    </nav>
+  </div>
+  <!-- End Page Title -->
+
+  <section class="section">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">
+              Tables categories<a
+                class="btn btn-primary float-end"
+                href="{% url 'add-category' %}"
+                >Ajouter</a
+              >
+            </h5>
+
+            <!-- Table with stripped rows -->
+            <table class="table datatable text-center">
+              <thead>
+                <tr>
+                  <th><b>N</b>om</th>
+                  <th class="text-center">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for category in categorys %}
+                <tr>
+                  <td>{{category.name}}</td>
+                  <td class="text-center">
+                    <a href="{% url 'update-category' category.id %}" class="text-warning"><i>Modifier</i></a>
+                    <a href="{% url 'delete-category' category.id %}" class="text-danger"><i>Supprimer</i></a>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+            <!-- End Table with stripped rows -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+<!-- End #main -->
+
+<!-- ======= Footer ======= -->
+<footer id="footer" class="footer">
+  <div class="copyright">
+    &copy; Copyright <strong><span>NiceAdmin</span></strong
+    >. All Rights Reserved
+  </div>
+  <div class="credits">
+    <!-- All the links in the footer should remain intact. -->
+    <!-- You can delete the links only if you purchased the pro version. -->
+    <!-- Licensing information: https://bootstrapmade.com/license/ -->
+    <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
+    Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+  </div>
+</footer>
+<!-- End Footer -->
+{% endblock content %} {% comment %} {% extends 'base.html' %} {% block title
+%}All depense{% endblock title %} {% block content %}
+<h2 class="text-center">Tous les dépenses</h2>
+<div>
+  <p>{{montant_depense.total}}</p>
+</div>
+<div class="container">
+  <div>
+    <a href="{% url 'add-depense' %}" class="btn btn-primary"
+      >Ajouter dépense</a
+    >
+  </div>
+  <table
+    class="table table-striped table-bordered text-center mt-3"
+    id="bootstrapdatatable"
+    width="100%"
+  >
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Catégorie</th>
+        <th scope="col">Montant</th>
+        <th scope="col">Date de création</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for depense in depenses %}
+      <tr>
+        <th scope="row">{{ depense.id }}</th>
+        <td>{{ depense.categorie }}</td>
+        <td>{{ depense.montant }} CFA</td>
+        <td>{{ depense.date }}</td>
+        <td>
+          <i class="bi bi-eye-fill text-success"></i>
+          <a href="{% url 'update-depense' depense.id %}"
+            ><i class="bi bi-pencil-square text-warning"></i
+          ></a>
+          <a href="{% url 'delete-depense' depense.id %}"
+            ><i class="bi bi-trash-fill text-danger"></i
+          ></a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock content %} {% endcomment %} {% comment %} {% extends 'base.html' %}
+{% block title %}All Category{% endblock title %} {% block content %}
+<div class="container">
+  <h2 class="text-center">Tous les catégories</h2>
+  <div class="center">
+    <a href="{% url 'add-category' %}" class="btn btn-primary"
+      >Ajouter catégorie</a
+    >
+  </div>
+  <table
+    class="table table-striped table-bordered text-center mt-5"
+    id="bootstrapdatatable"
+    width="100%"
+  >
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Name</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for category in categorys %}
+      <tr>
+        <th scope="row">{{ category.id }}</th>
+        <td>{{ category.name }}</td>
+        <td>
+          <i class="bi bi-eye-fill text-success"></i>
+          <a href="{% url 'update-category' category.id %}"
+            ><i class="bi bi-pencil-square text-warning"></i
+          ></a>
+          <a href="{% url 'delete-category' category.id %}"
+            ><i class="bi bi-trash-fill text-danger"></i
+          ></a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock content %} {% endcomment %}

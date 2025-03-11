@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Les données
+{% endblock title %}
+
+
+{% block content %}
+    <div>
+        <p>
+            {{montant_depense.total}}
+            {{montant_revenu.total}}
+            {{solde}}
+        </p>
+    </div>
+{% endblock content %}
+    

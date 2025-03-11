@@ -1,0 +1,84 @@
+{% extends 'finance.html' %}
+
+{% load static %}
+
+{% block content %}
+
+{% include 'header.html' %}
+
+{% include 'asidebar.html' %} 
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Graphe revenu</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="index.html">Finance</a></li>
+          <li class="breadcrumb-item">Révenus</li>
+          <li class="breadcrumb-item active">Graphe</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+  
+    <section class="section">
+      <div class="row">
+        <div class="">
+  
+            <div class="card">
+                <div class="card-body">
+                <h5 class="card-title text-center">Révenus par Source</h5>
+                <div style="width: 60%; margin: auto;">
+                    <canvas id="revenusChart"></canvas>
+                </div>
+                <script>
+                    // Données passées depuis le backend
+                    const sources = {{ sources|safe }};
+                    const montants = {{ montants|safe }};
+            
+                    // Création du graphique
+                    const ctx = document.getElementById('revenusChart').getContext('2d');
+                    new Chart(ctx, {
+                        type: 'pie', // Type de graphique (circulaire)
+                        data: {
+                            labels: sources, // Noms des sources
+                            datasets: [{
+                                label: 'Revenus par Source (€)',
+                                data: montants, // Montants par source
+                                backgroundColor: [
+                                    'rgba(255, 99, 132, 0.2)',
+                                    'rgba(54, 162, 235, 0.2)',
+                                    'rgba(255, 206, 86, 0.2)',
+                                    'rgba(75, 192, 192, 0.2)',
+                                    'rgba(153, 102, 255, 0.2)',
+                                    'rgba(255, 159, 64, 0.2)'
+                                ],
+                                borderColor: [
+                                    'rgba(255, 99, 132, 1)',
+                                    'rgba(54, 162, 235, 1)',
+                                    'rgba(255, 206, 86, 1)',
+                                    'rgba(75, 192, 192, 1)',
+                                    'rgba(153, 102, 255, 1)',
+                                    'rgba(255, 159, 64, 1)'
+                                ],
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            plugins: {
+                                legend: {
+                                    position: 'top',
+                                },
+                            }
+                        }
+                    });
+                </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main><!-- End #main -->
+
+{% endblock content %}

@@ -1,0 +1,111 @@
+{% extends 'finance.html' %} {% load static %} {% block content %}
+  {% include 'header.html' %} {% include 'asidebar.html' %}
+
+  <main id="main" class="main">
+    <div class="pagetitle">
+      <h1>Mes budgets</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="index.html">Finance</a>
+          </li>
+          <li class="breadcrumb-item">Suivi Budgets</li>
+          {% comment %}
+          <li class="breadcrumb-item active">Data</li>
+          {% endcomment %}
+        </ol>
+      </nav>
+    </div>
+    <!-- End Page Title -->
+
+    <section class="section">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">
+                Tables budgets
+                {% comment %} <a href="{% url 'add-budget' %}" class="btn btn-primary mx-3 float-end">Ajouter</a>  {% endcomment %}
+                {% comment %} <a href="{% url 'suivi_budget' %}" class="btn btn-primary float-end">Suivi</a> {% endcomment %}
+              </h5>
+              {% comment %}
+              <p>
+                Add lightweight datatables to your project with using the
+                <a href="https://github.com/fiduswriter/Simple-DataTables" target="_blank">Simple DataTables</a>
+                library. Just add <code>.datatable</code> class name to any table you wish to conver to a datatable. Check for
+                <a href="https://fiduswriter.github.io/simple-datatables/demos/" target="_blank">more examples</a>.
+              </p>
+              {% endcomment %}
+
+              <!-- Table with stripped rows -->
+              <table class="table datatable">
+                <thead>
+                  <tr>
+                    <th>Catégorie</th>
+                    <th>Budget (€)</th>
+                    <th>Dépenses Totales (€)</th>
+                    <th>Reste (€)</th>
+                    <th>Statut</th>
+                    <th>Date Début</th>
+                    <th>Date Fin</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for item in suivi %}
+                    <tr>
+                      <td>{{ item.category }}</td>
+                      <td>{{ item.montant }}</td>
+                      <td>{{ item.total_depenses }}</td>
+                      <td>{{ item.reste }}</td>
+                      <td {% if item.reste < 0 %} class="text-danger" {% else %} class="text-success" {% endif %}>
+                        {{ item.statut }}
+                      </td>
+                      <td>{{ item.date_debut }}</td>
+                      <td>{{ item.date_fin }}</td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+              <!-- End Table with stripped rows -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <!-- End #main -->
+{% endblock %}
+
+{% comment %}
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Suivi des Budgets</title>
+  </head>
+  <body>
+    <h1>Suivi des Budgets et Dépenses</h1>
+    <table border="1">
+      <tr>
+        <th>Catégorie</th>
+        <th>Budget (€)</th>
+        <th>Dépenses Totales (€)</th>
+        <th>Reste (€)</th>
+        <th>Statut</th>
+        <th>Date Début</th>
+        <th>Date Fin</th>
+      </tr>
+      {% for item in suivi %}
+        <tr>
+          <td>{{ item.category }}</td>
+          <td>{{ item.montant }}</td>
+          <td>{{ item.total_depenses }}</td>
+          <td>{{ item.reste }}</td>
+          <td>{{ item.statut }}</td>
+          <td>{{ item.date_debut }}</td>
+          <td>{{ item.date_fin }}</td>
+        </tr>
+      {% endfor %}
+    </table>
+  </body>
+</html> {% endcomment %}

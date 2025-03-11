@@ -1,0 +1,201 @@
+{% extends 'finance.html' %}
+{% load static %}
+
+
+{% block content %}
+<main>
+  <div class="container">
+
+    <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
+
+            <div class="d-flex justify-content-center py-4">
+              <a href="index.html" class="logo d-flex align-items-center w-auto">
+                <img src="{% static 'assets/img/logo.png' %}" alt="">
+                {% comment %} <span class="d-none d-lg-block">NiceAdmin</span> {% endcomment %}
+              </a>
+            </div><!-- End Logo -->
+
+            <div class="card mb-3">
+
+              <div class="card-body">
+
+                <div class="pt-4 pb-2">
+                  <h5 class="card-title text-center pb-0 fs-4">Créer un compte</h5>
+                  <p class="text-center small">Entrer vos détails personnels pour créer un compte</p>
+                </div>
+
+                <form class="row g-3 needs-validation" method="post">
+                  {% csrf_token %}
+                  <div class="col-12">
+                    <label for="yourName" class="form-label">Nom d'utilisateur</label>
+                    <input type="text" name="username" class="form-control" id="yourName" required>
+                    <div class="invalid-feedback">S'il vous plait entrer votre nom</div>
+                  </div>
+
+                  <div class="col-12">
+                    <label for="yourEmail" class="form-label">Email</label>
+                    <input type="email" name="email" class="form-control" id="yourEmail" required>
+                    <div class="invalid-feedback">S'il vous plait entrer votre email</div>
+                  </div>
+
+                  {% comment %} <div class="col-12">
+                    <label for="yourUsername" class="form-label">Username</label>
+                    <div class="input-group has-validation">
+                      <span class="input-group-text" id="inputGroupPrepend">@</span>
+                      <input type="text" name="username" class="form-control" id="yourUsername" required>
+                      <div class="invalid-feedback">Please choose a username.</div>
+                    </div>
+                  </div> {% endcomment %}
+
+                  <div class="col-12">
+                    <label for="yourPassword" class="form-label">Mot de passe</label>
+                    <input type="password" name="password" class="form-control" id="yourPassword" required>
+                    <div class="invalid-feedback">S'il vous plait entrer votre mot de passe</div>
+                  </div>
+
+                  {% comment %} <div class="col-12">
+                    <div class="form-check">
+                      <input class="form-check-input" name="terms" type="checkbox" value="" id="acceptTerms" required>
+                      <label class="form-check-label" for="acceptTerms">I agree and accept the <a href="#">terms and conditions</a></label>
+                      <div class="invalid-feedback">You must agree before submitting.</div>
+                    </div>
+                  </div> {% endcomment %}
+                  <div class="col-12">
+                    <button class="btn btn-primary w-100" type="submit">Créer compte</button>
+                  </div>
+                  <div class="col-12">
+                    <p class="small mb-0">Avez-vous déjà un compte? <a href="{% url 'login' %}">Se connecter</a></p>
+                  </div>
+                </form>
+
+              </div>
+            </div>
+
+            <div class="credits">
+              <!-- All the links in the footer should remain intact. -->
+              <!-- You can delete the links only if you purchased the pro version. -->
+              <!-- Licensing information: https://bootstrapmade.com/license/ -->
+              <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
+              {% comment %} Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a> {% endcomment %}
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+</main><!-- End #main -->
+{% endblock content %}
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% comment %} {% extends 'account_base.html' %}
+
+{% block content %}
+  
+<div class="container h-100">
+  <div class="d-flex justify-content-center h-100">
+    <div class="user_card">
+      <div class="d-flex justify-content-center">
+        <div class="brand_logo_container">
+          <img src="https://cdn.freebiesupply.com/logos/large/2x/pinterest-circle-logo-png-transparent.png" class="brand_logo" alt="Logo">
+        </div>
+      </div>
+      <div class="d-flex justify-content-center form_container">
+        <form method="post">
+          {% csrf_token %}
+          <div class="input-group mb-3">
+            <div class="input-group-append">
+              <span class="input-group-text"><i class="fas fa-user"></i></span>
+            </div>
+            <input type="text" name="username" class="form-control input_user" value="" placeholder="Username">
+          </div>
+          <div class="input-group mb-2">
+            <div class="input-group-append">
+              <span class="input-group-text"><i class="fas fa-user"></i></span>
+            </div>
+            <input type="email" name="email" class="form-control input_user" value="" placeholder="Email">
+          </div>
+          <div class="input-group mb-2">
+            <div class="input-group-append">
+              <span class="input-group-text"><i class="fas fa-key"></i></span>
+            </div>
+            <input type="password" name="password" class="form-control input_pass" value="" placeholder="Password">
+          </div>
+          <div class="form-group">
+            <div class="custom-control custom-checkbox">
+              <input type="checkbox" class="custom-control-input" id="customControlInline">
+              <label class="custom-control-label" for="customControlInline">Remember me</label>
+            </div>
+          </div> 
+            <div class="d-flex justify-content-center mt-3 login_container">
+                <button type="submit" name="button" class="btn login_btn">Sign Up</button>
+            </div>
+        </form>
+      </div>
+  
+      <div class="mt-4">
+        <div class="d-flex justify-content-center links">
+          Already have an account? <a href="{% url 'login' %}" class="ml-2">Sign In</a>
+        </div>
+        <div class="d-flex justify-content-center links">
+          <a href="#">Forgot your password?</a>
+        </div> 
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}
+  
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+</head>
+<body>
+    <h2>Register</h2>
+    <form method="post">
+        {% csrf_token %}
+        <div>
+            {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            <label for="username">Username</label>
+            <input type="text" name="username" for="username">
+        </div>
+        <div>
+            <label for="email">Email</label>
+            <input type="email" name="email" for="email">
+        </div>
+        <div>
+            <label for="password">Password</label>
+            <input type="password" name="password" for="password">
+        </div>
+        <button type="submit">Register</button>
+    </form>
+</body>
+</html>  {% endcomment %}
