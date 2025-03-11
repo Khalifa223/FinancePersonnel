@@ -17,7 +17,7 @@ def add_epargne(request):
     return render(request, "epargne/add-epargne.html")
 
 def epargnes(request):
-    epargnes = Epargne.objects.all()
+    epargnes = Epargne.objects.filter(owner=request.user)
     current_month = date.today().month
     epargne_mois = Epargne.objects.filter(date__month=current_month)
     total_epargne = epargne_mois.aggregate(Sum("montant"))
@@ -49,12 +49,12 @@ def delete_epargne(request, id):
 
 def suivi_epargne(request):
     # Récupérer l'objectif mensuel (ou créer un par défaut)
-    objectif, created = ObjectifEpargne.objects.get_or_create(id=1)  # Un seul objectif pour toute l'application
+    objectif, created = ObjectifEpargne.objects.get_or_create(owner=request.user)  # Un seul objectif pour toute l'application
     
     locale.setlocale(locale.LC_TIME, "fr_FR.UTF-8")
     mois_courant = date.today().strftime("%Y-%m")
     current_month = date.today().strftime("%B")
-    epargne_mensuelle = Epargne.objects.filter(date__startswith=mois_courant).aggregate(Sum('montant'))['montant__sum'] or 0
+    epargne_mensuelle = Epargne.objects.filter(owner=request.user, date__startswith=mois_courant).aggregate(Sum('montant'))['montant__sum'] or 0
 
     message = ""
     if epargne_mensuelle >= objectif.montant:
@@ -62,7 +62,7 @@ def suivi_epargne(request):
             "Finance Personnel", #Title
             "Objectif d'epargne atteint", #Message
             "settings.EMAIL_HOST_USER",
-            ['khalifacoders@gmail.com'], #receiver email    
+            [request.user.email], #receiver email    
             fail_silently=False
         )
     else :
@@ -70,7 +70,7 @@ def suivi_epargne(request):
             "Finance Personnel", #Title
             "Objectif d'épargne non atteint", #Message
             "settings.EMAIL_HOST_USER",
-            ['khalifacoders@gmail.com'], #receiver email
+            [request.user.email], #receiver email
             fail_silently=False
         )
     # if request.method == 'POST':
@@ -103,7 +103,7 @@ def suivi_epargne(request):
         'epargne_mensuelle': epargne_mensuelle,
         'objectif_mensuel': objectif.montant,
         'mois_courant': current_month,
-        'epargnes': Epargne.objects.all(),
+        'epargnes': Epargne.objects.filter(owner=request.user),
         'message': message,
     }
     return render(request, 'epargne/suivi_epargne.html', context)
@@ -118,6 +118,7 @@ def definir_epargne(request):
                 nouvel_objectif = float(nouvel_objectif)
                 if nouvel_objectif > 0:
                     objectif.montant = nouvel_objectif
+                    objectif.owner = request.user
                     objectif.save()
                     message = f"✅ Nouvel objectif mensuel défini : {nouvel_objectif} €."
                     return redirect('epargnes')

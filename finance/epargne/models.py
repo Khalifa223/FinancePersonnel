@@ -13,6 +13,7 @@ class Epargne(models.Model):
         return f'{self.montant}'
 
 class ObjectifEpargne(models.Model):
+    owner = models.ForeignKey(to=User, on_delete=models.CASCADE)
     montant = models.DecimalField(max_digits=10, decimal_places=2, default=500)  # Valeur par défaut = 500 €
 
     class Meta:

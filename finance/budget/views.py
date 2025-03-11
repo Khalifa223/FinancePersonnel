@@ -20,7 +20,7 @@ def add_budget(request):
     return render(request, "budget/add-budget.html", context)
 
 def budgets(request):
-    budgets = Budget.objects.all()
+    budgets = Budget.objects.filter(owner=request.user)
     context = {'budgets': budgets}
     return render(request, "budget/budgets.html", context)
 
