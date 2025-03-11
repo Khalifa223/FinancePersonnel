@@ -27,7 +27,7 @@ def add_depense(request):
     return render(request, "depense/add-depense.html", context)
 
 def depenses(request):
-    depenses = Depense.objects.all()
+    depenses = Depense.objects.filter(owner=request.user)
     montant_depense = Depense.objects.aggregate(total=Sum("montant"))
     context = {'depenses': depenses, 'montant_depense': montant_depense}
     return render(request, "depense/depenses.html", context)
@@ -73,12 +73,11 @@ def dashboard(request):
 
 def depenses_par_categorie(request):
     # Obtenir les dépenses totales par catégorie
-    depenses = Depense.depenses_par_categorie()
+    depenses = Depense.depenses_par_categorie(request.user)
 
     # Préparer les données pour le graphique
     categories = [item['categorie'] for item in depenses]
     valeurs = [item['total'] for item in depenses]
-    print(valeurs)
     context = {
         "categories": categories,
         "valeurs": valeurs,

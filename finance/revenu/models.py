@@ -16,8 +16,8 @@ class Revenu(models.Model):
     
     
     @classmethod
-    def revenus_par_source(cls):
+    def revenus_par_source(cls, user):
         """
         Calcule les revenus totaux regroupés par source.
         """
-        return cls.objects.values('source').annotate(total=Sum('montant')).order_by('source')
+        return cls.objects.filter(owner=user).values('source').annotate(total=Sum('montant')).order_by('source')

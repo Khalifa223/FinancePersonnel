@@ -24,7 +24,7 @@ def add_revenu(request):
     return render(request, "revenu/add-revenu.html", context)
 
 def revenus(request):
-    revenus = Revenu.objects.all()
+    revenus = Revenu.objects.filter(owner=request.user)
     montant_revenu = Revenu.objects.aggregate(total=Sum("montant"))
     context = {'revenus': revenus, 'montant_revenu': montant_revenu}
     return render(request, "revenu/revenus.html", context)
@@ -66,7 +66,7 @@ def delete_revenu(request, id):
 
 def revenus_par_source(request):
     # Obtenir les revenus par source
-    revenus = Revenu.revenus_par_source()
+    revenus = Revenu.revenus_par_source(request.user)
 
     # Préparer les données pour le graphique
     sources = [item['source'] for item in revenus]

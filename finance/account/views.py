@@ -45,8 +45,8 @@ def log_out(request):
 @login_required
 def index(request):
     solde = 0
-    montant_depense = Depense.objects.all().aggregate(total=Sum("montant"))
-    montant_revenu = Revenu.objects.all().aggregate(total=Sum("montant"))
+    montant_depense = Depense.objects.filter(owner=request.user).aggregate(total=Sum("montant"))
+    montant_revenu = Revenu.objects.filter(owner=request.user).aggregate(total=Sum("montant"))
     revenu = montant_revenu["total"]
     depense = montant_depense["total"]
     if depense is not None and revenu is not None:

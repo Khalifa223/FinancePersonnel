@@ -15,8 +15,8 @@ class Depense(models.Model):
     #     return f'{self.categorie}'
     
     @classmethod
-    def depenses_par_categorie(cls):
+    def depenses_par_categorie(cls, user):
         """
-        Retourne les dépenses totales regroupées par catégorie.
+        Retourne les dépenses totales regroupées par catégorie pour un utilisateur donné.
         """
-        return cls.objects.values('categorie').annotate(total=Sum('montant')).order_by('categorie')
+        return cls.objects.filter(owner=user).values('categorie').annotate(total=Sum('montant')).order_by('categorie')
