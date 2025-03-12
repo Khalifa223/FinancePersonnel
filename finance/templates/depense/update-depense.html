@@ -1,5 +1,6 @@
 {% extends 'finance.html' %}
 {% load static %}
+{% load humanize %}
 
 {% block content %}
   
@@ -15,7 +16,7 @@
     <h1>Mes dépenses</h1>
     <nav>
       <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="index.html">Finance</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'home' %}">Finance</a></li>
         <li class="breadcrumb-item">Depense</li>
         <li class="breadcrumb-item active">Update</li>
       </ol>
@@ -37,7 +38,7 @@
                 <label for="inputText" class="col-sm-2 col-form-label">Category</label>
                 <div class="col-sm-10">
                   {% comment %} <input type="text" class="form-select" id="inputText"> {% endcomment %}
-                  <select name="categorie" class="form-select" id="" value="{{budget.category}}">
+                  <select name="categorie" class="form-select" id="inputText" value="{{budget.category}}">
                     <option value="{{depense.categorie}}">{{depense.categorie}}</option>
                     {% for categorie in categories %}
                       <option>{{ categorie.name }}</option>
@@ -48,7 +49,7 @@
               <div class="row mb-3">
                 <label for="inputEmail" class="col-sm-2 col-form-label">Montant</label>
                 <div class="col-sm-10">
-                  <input type="number" class="form-control" id="inputEmail" value="{{depense.montant}}" name="montant">
+                  <input type="number" class="form-control" id="inputEmail" value="{{depense.montant|intword}}" name="montant">
                 </div>
               </div>
               

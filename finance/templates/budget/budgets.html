@@ -1,5 +1,10 @@
-{% extends 'finance.html' %} {% load static %} {% block content %} 
-{% include 'header.html' %} {% include 'asidebar.html' %}
+{% extends 'finance.html' %} 
+{% load static %} 
+{% load humanize %}
+
+{% block content %} 
+{% include 'header.html' %} 
+{% include 'asidebar.html' %}
 
 <main id="main" class="main">
   <div class="pagetitle">
@@ -15,7 +20,7 @@
     </nav>
   </div>
   <!-- End Page Title -->
-
+  {% include 'messages.html' %}
   <section class="section">
     <div class="row">
       <div class="col-lg-12">
@@ -63,7 +68,7 @@
                 {% for budget in budgets %}
                 <tr>
                   <td>{{budget.category}}</td>
-                  <td>{{budget.montant}}</td>
+                  <td>{{budget.montant| intword| intcomma}}</td>
                   <td>{{budget.date_debut}}</td>
                   <td>{{budget.date_fin}}</td>
                   <td class="text-center">

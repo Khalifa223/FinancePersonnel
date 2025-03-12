@@ -1,5 +1,6 @@
 {% extends 'finance.html' %}
 {% load static %}
+{% load humanize %}
 
 {% block content %}
   
@@ -38,11 +39,11 @@
                 <label for="inputText" class="col-sm-2 col-form-label">Category</label>
                 <div class="col-sm-10">
                   {% comment %} <input type="text" class="form-select" id="inputText"> {% endcomment %}
-                  <select name="category" class="form-select" id="" value="{{budget.category}}">
+                  <select name="category" class="form-select" id="inputText" value="{{budget.category}}">
                     <option value="{{budget.category}}">{{budget.category}}</option>
-                    {% for categorie in categories %}
+                    {% comment %} {% for categorie in categories %}
                       <option>{{ categorie.name }}</option>
-                    {% endfor %}
+                    {% endfor %} {% endcomment %}
                                  
                   </select>
                 </div>
@@ -50,13 +51,13 @@
               <div class="row mb-3">
                 <label for="inputNumber" class="col-sm-2 col-form-label">Montant</label>
                 <div class="col-sm-10">
-                  <input type="number" class="form-control" id="inputNumber" name="montant" value="{{budget.montant}}">
+                  <input type="number" class="form-control" id="inputNumber" name="montant" value="{{budget.montant | intword}}">
                 </div>
               </div>
               <div class="row mb-3">
                 <label for="inputDate" class="col-sm-2 col-form-label">Date fin</label>
                 <div class="col-sm-10">
-                  <input type="date" class="form-control" id="inputDate" name="date">
+                  <input type="date" class="form-control" id="inputDate" name="date" value="{{date_fin}}">
                 </div>
               </div>
               
@@ -90,7 +91,8 @@
 
 
 
-{% comment %} {% extends 'base.html' %}
+{% comment %} 
+{% extends 'base.html' %}
 
 
 {% block title %}
@@ -137,19 +139,8 @@
 {% endblock content %}
      {% endcomment %}
 
-
-
-
-
-
-
-
-
-
-
-
-
-{% comment %} {% extends 'base.html' %}
+{% comment %} 
+{% extends 'base.html' %}
 
 
 {% block title %}
@@ -195,4 +186,4 @@
         </div>
     </div>
 {% endblock content %}
-     {% endcomment %}
+{% endcomment %}

@@ -13,7 +13,7 @@ class Budget(models.Model):
     date_fin = models.DateField(auto_now_add=False)
     
     def __str__(self):
-        return f'{self.category} - {self.montant}€'
+        return f'{self.category} - {self.montant}Fcfa'
 
     def suivre_depenses(self):
         """
