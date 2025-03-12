@@ -5,10 +5,8 @@ from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from django.contrib import messages
 from django.db.models import Sum
-
 from revenu.models import Revenu
 from depense.models import Depense
-
 from .utils import authenticate
 
 # Create your views here.
@@ -18,10 +16,24 @@ def register(request):
         username = request.POST["username"]
         email = request.POST["email"]
         pass1 = request.POST["password"]
-        
+        if len(pass1) < 8:
+            messages.error(request, "Le mot de passe est doit etre superieur a 8 caracteres.")
+            return redirect("register")
+        try:
+            if User.objects.get(email = email):
+                messages.info(request, "Cet email est deja pris")
+                return redirect("register")
+        except:
+            pass
+        try:
+            if User.objects.get(username = username):
+                messages.info(request, "Ce nom d'utilisateur est deja pris")
+                return redirect("register")        
+        except:
+            pass
         User.objects.create_user(username=username, email=email, password=pass1)
+        messages.success(request, "L'utilisateur a ete creee avec success")
         return redirect('login')
-        # messages.info(request, "user created")
     return render(request, "account/register.html")
 
 
@@ -32,10 +44,10 @@ def loginView(request):
         user = authenticate(email=email, password=password)
         if user is not None:
             login(request, user)
-            # messages.info(request, "user connecté !!!")
+            messages.success(request, "L'utilisateur connecte avec succes")
             return redirect("home")
         else:
-            messages.error(request, 'user non connecté...')
+            messages.error(request, 'Votre email ou mot de passe est incorrect')
     return render(request, "account/login.html")
 
 def log_out(request):

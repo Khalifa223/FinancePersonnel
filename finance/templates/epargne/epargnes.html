@@ -1,5 +1,8 @@
 {% extends 'finance.html' %} 
-{% load static %} {% block content %} 
+{% load static %} 
+{% load humanize %}
+
+{% block content %} 
 {% include 'header.html' %} 
 {% include 'asidebar.html' %}
 
@@ -8,7 +11,7 @@
     <h1>Mes épargnes</h1>
     <nav>
       <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="index.html">Finance</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'home' %}">Finance</a></li>
         <li class="breadcrumb-item">Epargnes</li>
         {% comment %}
         <li class="breadcrumb-item active">Data</li>
@@ -85,7 +88,7 @@
                   {% comment %}
                   <td>Unity Pugh</td>
                   {% endcomment %}
-                  <td>{{epargne.montant}}</td>
+                  <td>{{epargne.montant| intword| intcomma}}</td>
                   <td>{{epargne.date}}</td>
                   {% comment %}
                   <td>2005/02/11</td>

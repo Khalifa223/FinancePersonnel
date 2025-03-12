@@ -1,5 +1,6 @@
 {% extends 'finance.html' %}
 {% load static %}
+{% load humanize %}
 
 {% block content %}
 
@@ -13,7 +14,7 @@
     <h1>Mes revenus</h1>
     <nav>
       <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="index.html">Finance</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'home' %}">Finance</a></li>
         <li class="breadcrumb-item">Revenu</li>
         {% comment %} <li class="breadcrumb-item active">Data</li> {% endcomment %}
       </ol>
@@ -52,7 +53,7 @@
                 {% for revenu in revenus %}
                 <tr>
                   <td>{{revenu.source}}</td>
-                  <td>{{revenu.montant}}</td>
+                  <td>{{revenu.montant| intword| intcomma}}</td>
                   <td>{{revenu.description}}</td>
                   <td>{{revenu.date}}</td>
                   <td class="text-center">
