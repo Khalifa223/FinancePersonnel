@@ -18,8 +18,20 @@ def add_revenu(request):
         montant = request.POST["montant"]
         source = request.POST["source"]
         description = request.POST["description"]
+        if not source:
+            messages.info(request, "La source est obligatoire.")
+            return redirect('add-revenu')
+        # if Source.objects.filter(name=source).exists():
+        #     messages.info(request, "La source existe déjà")
+        #     return redirect('add-revenu')
+        if not montant:
+            messages.info(request, "Le montant est obligatoire. ")
+            return redirect('add-revenu')
+        if not description:
+            messages.info(request, "La description du revenu est obligatoire.")
+            return redirect('add-revenu')
         Revenu.objects.create(owner=request.user, montant=montant, source=source, description=description)
-        # messages.info(request, "revenu ajouté")
+        messages.success(request, "Votre revenu a été ajouté")
         return redirect('revenus')
     return render(request, "revenu/add-revenu.html", context)
 
@@ -42,27 +54,25 @@ def update_revenu(request, id):
         montant = request.POST["montant"]
         source = request.POST["source"]
         description = request.POST["description"]
+        if not montant:
+            messages.error(request, "Le montant est obligatoire. ")
+            return redirect('update-revenu', revenu.id)
+        if not description:
+            messages.error(request, "La description du revenu est obligatoire.")
+            return redirect('update-revenu', revenu.id)
         revenu.montant = montant
         revenu.source = source
         revenu.description = description
         revenu.save()
-        # messages.info(request, "revenu modifié")
+        messages.info(request, "Votre revenu a été modifié")
         return redirect('revenus')
     return render(request, "revenu/update-revenu.html", context)
 
 def delete_revenu(request, id):
     revenu = Revenu.objects.get(id=id)
     revenu.delete()
+    messages.info(request, "Votre revenu a été supprimé")
     return redirect('revenus')
-
-# def dashboard(request):
-#     revenus = Revenu.objects.all()
-#     montant_revenu = Revenu.objects.aggregate(total=Sum("montant"))
-#     context = {
-#         'revenus': revenus,
-#         'montant_revenu': montant_revenu
-#     }
-#     return render(request, "account/home.html", context)
 
 def revenus_par_source(request):
     # Obtenir les revenus par source

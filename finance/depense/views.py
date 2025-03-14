@@ -20,9 +20,21 @@ def add_depense(request):
         montant = request.POST["montant"]
         description = request.POST["description"]
         categorie = request.POST["categorie"]
-        print("##################", request.user, "##################")
+        if not categorie:
+            messages.info(request, "La categorie est obligatoire.")
+            return redirect('add-depense')
+        if Budget.objects.get(category=categorie):
+            messages.info(request, "La catégorie existe")
+            return redirect('add-depense')
+        if not montant:
+            messages.info(request, "Le montant est obligatoire. ")
+            return redirect('add-depense')
+        if not description:
+            messages.info(request, "La description de la dépense est obligatoire.")
+            return redirect('add-depense')
         depense = Depense(owner=request.user, montant=montant, description=description, categorie=categorie)
         depense.save()
+        messages.success(request, "Votre dépense a été ajouté avec succè   s")
         return redirect('depenses')
     return render(request, "depense/add-depense.html", context)
 
@@ -43,6 +55,15 @@ def update_depense(request, id):
         montant = request.POST["montant"]
         categorie = request.POST["categorie"]
         description = request.POST["description"]
+        if not categorie:
+            messages.error(request, "La categorie est obligatoire.")
+            return redirect("update-depense", depense.id)
+        if not montant:
+            messages.error(request, "Le montant est obligatoire. ")
+            return redirect("update-depense", depense.id)
+        if not description:
+            messages.error(request, "La description de la dépense est obligatoire.")
+            return redirect("update-depense", depense.id)
         depense.montant = montant
         depense.categorie = categorie
         depense.description = description

@@ -1,5 +1,10 @@
-{% extends 'finance.html' %} {% load static %} {% block content %}
-  {% include 'header.html' %} {% include 'asidebar.html' %}
+{% extends 'finance.html' %} 
+{% load static %} 
+{% load humanize %}
+
+{% block content %}
+{% include 'header.html' %} 
+{% include 'asidebar.html' %}
 
   <main id="main" class="main">
     <div class="pagetitle">
@@ -7,7 +12,7 @@
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item">
-            <a href="index.html">Finance</a>
+            <a href="{% url 'home' %}">Finance</a>
           </li>
           <li class="breadcrumb-item">Suivi Budgets</li>
           {% comment %}
@@ -38,13 +43,13 @@
               {% endcomment %}
 
               <!-- Table with stripped rows -->
-              <table class="table datatable">
+              <table class="table" id="example">
                 <thead>
                   <tr>
                     <th>Catégorie</th>
-                    <th>Budget (€)</th>
-                    <th>Dépenses Totales (€)</th>
-                    <th>Reste (€)</th>
+                    <th>Budget</th>
+                    <th>Dépenses Totales</th>
+                    <th>Reste</th>
                     <th>Statut</th>
                     <th>Date Début</th>
                     <th>Date Fin</th>
@@ -54,9 +59,9 @@
                   {% for item in suivi %}
                     <tr>
                       <td>{{ item.category }}</td>
-                      <td>{{ item.montant }}</td>
-                      <td>{{ item.total_depenses }}</td>
-                      <td>{{ item.reste }}</td>
+                      <td>{{ item.montant| intword| intcomma }} FCFA</td>
+                      <td>{{ item.total_depenses| intword| intcomma }} FCFA</td>
+                      <td>{{ item.reste| intword| intcomma }} FCFA</td>
                       <td {% if item.reste < 0 %} class="text-danger" {% else %} class="text-success" {% endif %}>
                         {{ item.statut }}
                       </td>
@@ -75,37 +80,3 @@
   </main>
   <!-- End #main -->
 {% endblock %}
-
-{% comment %}
-<!DOCTYPE html>
-<html lang="fr">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Suivi des Budgets</title>
-  </head>
-  <body>
-    <h1>Suivi des Budgets et Dépenses</h1>
-    <table border="1">
-      <tr>
-        <th>Catégorie</th>
-        <th>Budget (€)</th>
-        <th>Dépenses Totales (€)</th>
-        <th>Reste (€)</th>
-        <th>Statut</th>
-        <th>Date Début</th>
-        <th>Date Fin</th>
-      </tr>
-      {% for item in suivi %}
-        <tr>
-          <td>{{ item.category }}</td>
-          <td>{{ item.montant }}</td>
-          <td>{{ item.total_depenses }}</td>
-          <td>{{ item.reste }}</td>
-          <td>{{ item.statut }}</td>
-          <td>{{ item.date_debut }}</td>
-          <td>{{ item.date_fin }}</td>
-        </tr>
-      {% endfor %}
-    </table>
-  </body>
-</html> {% endcomment %}
