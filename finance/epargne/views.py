@@ -11,8 +11,11 @@ from .models import Epargne, ObjectifEpargne
 def add_epargne(request):
     if  request.method == "POST":
         montant = request.POST["montant"]
+        if not montant:
+            messages.error(request, "Le montant est obligatoire")
+            return redirect('add-epargne')
         Epargne.objects.create(owner=request.user, montant=montant)
-        # messages.info(request, "epargne ajouté")
+        messages.success(request, "Votre épargne a été ajouté")
         return redirect('epargnes')
     return render(request, "epargne/add-epargne.html")
 
@@ -36,9 +39,12 @@ def update_epargne(request, id):
     }
     if request.method == "POST":
         montant = request.POST["montant"]
+        if not montant:
+            messages.error(request, "Le montant est obligatoire")
+            return redirect('update-epargne', epargne.id)
         epargne.montant = montant
         epargne.save()
-        # messages.info(request, "epargne modifié")
+        messages.info(request, "Votre épargne a été modifié")
         return redirect('epargnes')
     return render(request, "epargne/update-epargne.html", context)
 

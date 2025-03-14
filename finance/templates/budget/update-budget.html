@@ -16,12 +16,14 @@
     <h1>Mes budgets</h1>
     <nav>
       <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="index.html">Finance</a></li>
-        <li class="breadcrumb-item">Budget</li>
+        <li class="breadcrumb-item"><a href="{% url 'home' %}">Finance</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'budgets' %}">Budget</a></li>
         <li class="breadcrumb-item active">Modifier</li>
       </ol>
     </nav>
   </div><!-- End Page Title -->
+
+  {% include 'messages.html' %}
 
   <section class="section">
     <div class="row">
@@ -64,6 +66,10 @@
               <div class="row mb-3">
                 {% comment %} <label class="col-sm-2 col-form-label">Submit Button</label> {% endcomment %}
                 <div class="col-sm-10 text-center">
+                  <a href="{% url 'budgets' %}" class="btn btn-warning">
+                    <i class="bi bi-back"></i>
+                    Retour
+                  </a>
                   <button type="submit" class="btn btn-warning">Modifier</button>
                 </div>
               </div>

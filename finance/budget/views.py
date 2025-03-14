@@ -39,33 +39,29 @@ def budgets(request):
 
 def update_budget(request, id):
     budget = Budget.objects.get(id=id)
-    # date_fin = budget.date_fin.strptime("%Y-%m-%d")
     date_fin = budget.date_fin.strftime("%Y-%m-%d") if budget.date_fin else ""
-    print("#################################################")
-    print(budget.date_fin)
-    print("#################################################")
     categories = Category.objects.all()
     if request.method == "POST":
         montant = request.POST.get("montant").replace(",", ".")
         category = request.POST["category"]
         date_fin = request.POST["date"]
+        if Budget.objects.filter(category=category).exists():
+            messages.info(request, "Cette catégorie existe")
+            return redirect("add-budget")
         if not montant:
-            messages.info(request, "Le montant est obligatoire")
-            # return render(request, "budget/update-budget.html")
-            # return redirect("update-budget")
+            messages.error(request, "Le montant est obligatoire")
+            return redirect("update-budget", budget.id)
         if not category:
-            messages.info(request, "La catégorie est obligatoire")
-            # return render(request, "budget/update-budget.html")
-            # return redirect("update-budget")
+            messages.error(request, "La catégorie est obligatoire")
+            return redirect("update-budget", budget.id)
         if not date_fin:
-            messages.info(request, "La date de fin est obligatoire")
-            # return render(request, "budget/update-budget.html")
-            # return redirect("update-budget")
+            messages.error(request, "La date de fin est obligatoire")
+            return redirect("update-budget", budget.id)
         budget.montant = montant
         budget.category = category
         budget.date_fin = date_fin
         budget.save()
-        messages.warning(request, "Le budget a ete modifie avec success")
+        messages.info(request, "Votre budget a été modifié")
         return redirect('budgets')
     context = {
         'budget': budget,
@@ -78,7 +74,7 @@ def update_budget(request, id):
 def delete_budget(request, id):
     budget = Budget.objects.get(id=id)
     budget.delete()
-    messages.error(request, "Le budget a été supprimé avec succès")
+    messages.info(request, "Votre budget a été supprimé")
     return redirect('budgets')
 
 

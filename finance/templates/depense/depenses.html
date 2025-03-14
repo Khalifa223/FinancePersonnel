@@ -29,10 +29,14 @@
           <div class="card-body">
             <h5 class="card-title">
               Tables dépenses 
-              <a href="{% url 'add-depense' %}" class="btn btn-primary mx-3 float-end"
-              >Ajouter</a>
-              <a href="{% url 'depenses-par-categorie' %}" class="btn btn-primary float-end"
-              >Visualiser</a>
+              <a href="{% url 'add-depense' %}" class="btn btn-primary mx-3 float-end">
+                <i class="bi bi-add"></i>
+                Ajouter                
+              </a>
+              <a href="{% url 'depenses-par-categorie' %}" class="btn btn-primary float-end">
+                <i class="bi bi-eye"></i>
+                Visualiser
+              </a>
             </h5>
             {% comment %} <p>Add lightweight datatables to your project with using the <a href="https://github.com/fiduswriter/Simple-DataTables" target="_blank">Simple DataTables</a> library. Just add <code>.datatable</code> class name to any table you wish to conver to a datatable. Check for <a href="https://fiduswriter.github.io/simple-datatables/demos/" target="_blank">more examples</a>.</p> {% endcomment %}
 
