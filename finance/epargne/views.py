@@ -1,6 +1,7 @@
 from datetime import date
 import locale
 from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
 from django.contrib import messages
 from django.db.models import Sum
@@ -8,6 +9,7 @@ from .models import Epargne, ObjectifEpargne
 
 # Create your views here.
 
+@login_required
 def add_epargne(request):
     if  request.method == "POST":
         montant = request.POST["montant"]
@@ -19,6 +21,7 @@ def add_epargne(request):
         return redirect('epargnes')
     return render(request, "epargne/add-epargne.html")
 
+@login_required
 def epargnes(request):
     epargnes = Epargne.objects.filter(owner=request.user)
     current_month = date.today().month
@@ -32,6 +35,7 @@ def epargnes(request):
     }
     return render(request, "epargne/epargnes.html", context)
 
+@login_required
 def update_epargne(request, id):
     epargne = Epargne.objects.get(id=id)
     context = {
@@ -48,11 +52,13 @@ def update_epargne(request, id):
         return redirect('epargnes')
     return render(request, "epargne/update-epargne.html", context)
 
+@login_required
 def delete_epargne(request, id):
     epargne = Epargne.objects.get(id=id)
     epargne.delete()
     return redirect('epargnes')
 
+@login_required
 def suivi_epargne(request):
     # Récupérer l'objectif mensuel (ou créer un par défaut)
     objectif, created = ObjectifEpargne.objects.get_or_create(owner=request.user)  # Un seul objectif pour toute l'application
@@ -114,6 +120,7 @@ def suivi_epargne(request):
     }
     return render(request, 'epargne/suivi_epargne.html', context)
 
+@login_required
 def definir_epargne(request):
     objectif, created = ObjectifEpargne.objects.get_or_create(id=1)  # Un seul objectif pour toute l'application
     message = ""

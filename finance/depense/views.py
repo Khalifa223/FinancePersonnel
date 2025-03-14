@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
 from django.db.models import Sum
 from django.contrib import messages
 
@@ -9,6 +10,7 @@ from .models import Depense
 
 # Create your views here.
 
+@login_required
 def add_depense(request):
     categories = Category.objects.all()
     budgets = Budget.objects.all()
@@ -38,12 +40,14 @@ def add_depense(request):
         return redirect('depenses')
     return render(request, "depense/add-depense.html", context)
 
+@login_required
 def depenses(request):
     depenses = Depense.objects.filter(owner=request.user)
     montant_depense = Depense.objects.aggregate(total=Sum("montant"))
     context = {'depenses': depenses, 'montant_depense': montant_depense}
     return render(request, "depense/depenses.html", context)
 
+@login_required
 def update_depense(request, id):
     depense = Depense.objects.get(id=id)
     categories = Category.objects.all()
@@ -72,11 +76,13 @@ def update_depense(request, id):
         return redirect('depenses')
     return render(request, "depense/update-depense.html", context)
 
+@login_required
 def delete_depense(request, id):
     depense = Depense.objects.get(id=id)
     depense.delete()
     return redirect('depenses')
 
+@login_required
 def dashboard(request):
     depenses = Depense.objects.all()
     montant_depense = Depense.objects.all().aggregate(total=Sum("montant"))
@@ -92,6 +98,7 @@ def dashboard(request):
     }
     return render(request, "depense/data.html", context)
 
+@login_required
 def depenses_par_categorie(request):
     # Obtenir les dépenses totales par catégorie
     depenses = Depense.depenses_par_categorie(request.user)

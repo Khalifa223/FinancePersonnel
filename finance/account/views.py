@@ -1,6 +1,9 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login,logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth.views import PasswordChangeView
+from django.urls import reverse_lazy
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from django.contrib import messages
@@ -44,7 +47,7 @@ def loginView(request):
         user = authenticate(email=email, password=password)
         if user is not None:
             login(request, user)
-            messages.success(request, "L'utilisateur connecte avec succes")
+            # messages.success(request, "L'utilisateur connecte avec succes")
             return redirect("home")
         else:
             messages.error(request, 'Votre email ou mot de passe est incorrect')
@@ -79,3 +82,35 @@ def index(request):
     #     fail_silently=False
     # )
     return render(request, "account/home.html", context)
+
+
+# class ChangePasswordView(PasswordChangeView):
+#     form_class = PasswordChangeForm
+#     success_url = reverse_lazy('home')
+#     template_name = 'account/change_password.html'
+
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from django.contrib.auth.forms import PasswordChangeForm
+
+@login_required
+def change_password(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(user=request.user, data=request.POST)
+        print("########################################################")
+        print(form)
+        print("########################################################")
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)
+            messages.success(request, "✅ Votre mot de passe a été modifié avec succès !")
+            return redirect('change_password')
+        else:
+            messages.error(request, "❌ Une erreur s'est produite. Vérifiez vos informations.")
+    else:
+        form = PasswordChangeForm(user=request.user)
+
+    context={'form': form}
+    return render(request, 'account/change_password.html', context)
