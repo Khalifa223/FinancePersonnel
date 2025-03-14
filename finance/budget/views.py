@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core.mail import send_mail
 from category.models import Category
@@ -6,6 +7,7 @@ from budget.models import Budget
 
 # Create your views here.
 
+@login_required
 def add_budget(request):
     categories = Category.objects.all()
     context = {
@@ -32,11 +34,13 @@ def add_budget(request):
         return redirect('budgets')
     return render(request, "budget/add-budget.html", context)
 
+@login_required
 def budgets(request):
     budgets = Budget.objects.filter(owner=request.user)      
     context = {'budgets': budgets}
     return render(request, "budget/budgets.html", context)
 
+@login_required
 def update_budget(request, id):
     budget = Budget.objects.get(id=id)
     date_fin = budget.date_fin.strftime("%Y-%m-%d") if budget.date_fin else ""
@@ -71,13 +75,14 @@ def update_budget(request, id):
     }
     return render(request, "budget/update-budget.html", context)
 
+@login_required
 def delete_budget(request, id):
     budget = Budget.objects.get(id=id)
     budget.delete()
     messages.info(request, "Votre budget a été supprimé")
     return redirect('budgets')
 
-
+@login_required
 def suivi_budget(request):
     budgets = Budget.objects.all()
     suivi = []

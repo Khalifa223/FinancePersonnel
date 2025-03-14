@@ -1,12 +1,13 @@
 from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.db.models import Sum
-
 from source.models import Source
 from .models import Revenu
 
 # Create your views here.
 
+@login_required
 def add_revenu(request):
     sources = Source.objects.all()
     montant_revenu = Revenu.objects.aggregate(total=Sum("montant"))
@@ -35,12 +36,14 @@ def add_revenu(request):
         return redirect('revenus')
     return render(request, "revenu/add-revenu.html", context)
 
+@login_required
 def revenus(request):
     revenus = Revenu.objects.filter(owner=request.user)
     montant_revenu = Revenu.objects.aggregate(total=Sum("montant"))
     context = {'revenus': revenus, 'montant_revenu': montant_revenu}
     return render(request, "revenu/revenus.html", context)
 
+@login_required
 def update_revenu(request, id):
     revenu = Revenu.objects.get(id=id)
     sources = Source.objects.all()
@@ -68,12 +71,14 @@ def update_revenu(request, id):
         return redirect('revenus')
     return render(request, "revenu/update-revenu.html", context)
 
+@login_required
 def delete_revenu(request, id):
     revenu = Revenu.objects.get(id=id)
     revenu.delete()
     messages.info(request, "Votre revenu a été supprimé")
     return redirect('revenus')
 
+@login_required
 def revenus_par_source(request):
     # Obtenir les revenus par source
     revenus = Revenu.revenus_par_source(request.user)

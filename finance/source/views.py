@@ -1,14 +1,17 @@
 from django.shortcuts import redirect, render
+from django.contrib.auth.decorators import login_required
 from .models import Source
 from django.contrib import messages
 
 # Create your views here.
 
+@login_required
 def sources(request):
-    sources = Source.objects.all()
+    sources = Source.objects.filter(owner=request.user)
     context = {'sources': sources}
     return render(request, "source/sources.html", context)
 
+@login_required
 def add_source(request):
     if request.method == "POST":
         name = request.POST["name"]
@@ -18,11 +21,12 @@ def add_source(request):
         if not name:
             messages.error(request, "Le nom de la source est obligatoire")
             return redirect("add-source")
-        source = Source(name=name)
+        source = Source(name=name, owner=request.user)
         source.save()
         return redirect('sources')
     return render(request, "source/add-source.html")
 
+@login_required
 def update_source(request, id):
     source = Source.objects.get(id=id)
     if request.method == "POST":
@@ -37,6 +41,7 @@ def update_source(request, id):
     context = {"source": source, "id": id}
     return render(request, "source/update-source.html", context)
 
+@login_required
 def delete_source(request, id):
     source = Source.objects.get(id=id)
     source.delete()
