@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core.mail import send_mail
@@ -9,7 +10,7 @@ from budget.models import Budget
 
 @login_required
 def add_budget(request):
-    categories = Category.objects.all()
+    categories = Category.objects.filter(owner=request.user)
     context = {
         'categories': categories,
     }
@@ -17,8 +18,11 @@ def add_budget(request):
         montant = request.POST["montant"]
         category = request.POST["category"]
         date_fin = request.POST["date"]
-        if Budget.objects.filter(category=category).exists():
-            messages.info(request, "Cette catégorie existe")
+        if Budget.objects.filter(owner=request.user, category=category).exists():
+            messages.info(request, "Vous avez déjà un budget pour cette catégorie.")
+            return redirect("add-budget")
+        if Budget.objects.filter(category=category).filter(owner=request.user).exists():
+            messages.info(request, "Cette catégorie a été déjà budgetisé.")
             return redirect("add-budget")
         if not montant:
             messages.error(request, "Le montant est obligatoire")
@@ -49,9 +53,6 @@ def update_budget(request, id):
         montant = request.POST.get("montant").replace(",", ".")
         category = request.POST["category"]
         date_fin = request.POST["date"]
-        if Budget.objects.filter(category=category).exists():
-            messages.info(request, "Cette catégorie existe")
-            return redirect("add-budget")
         if not montant:
             messages.error(request, "Le montant est obligatoire")
             return redirect("update-budget", budget.id)
@@ -84,7 +85,7 @@ def delete_budget(request, id):
 
 @login_required
 def suivi_budget(request):
-    budgets = Budget.objects.all()
+    budgets = Budget.objects.filter(owner=request.user)
     suivi = []
 
     for budget in budgets:
@@ -98,14 +99,14 @@ def suivi_budget(request):
             "reste": details["reste"],
             "statut": details["statut"]
         })
-        if details["reste"] < 0:
-            send_mail(
-                "Finance Personnel", #Title
-                f"Vous avez dépassé le budget    pour {budget.category}", #Message
-                "settings.EMAIL_HOST_USER",
-                ['khalifacoders@gmail.com'], #receiver email
-                fail_silently=False
-            )
+        # if details["reste"] < 0:
+        #     send_mail(
+        #         "Finance Personnel", #Title
+        #         f"Vous avez dépassé le budget    pour {budget.category}", #Message
+        #         settings.EMAIL_HOST_USER,
+        #         ['khalifacoders@gmail.com'], #receiver email
+        #         fail_silently=False
+        #     )
 
     context = {
         "suivi": suivi,

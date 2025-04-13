@@ -15,7 +15,7 @@ def sources(request):
 def add_source(request):
     if request.method == "POST":
         name = request.POST["name"]
-        if Source.objects.filter(name=name).exists():
+        if Source.objects.filter(name=name).filter(owner=request.user).exists():
             messages.error(request, "Cet nom de source existe déjà")
             return redirect("add-source")
         if not name:

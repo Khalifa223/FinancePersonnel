@@ -40,12 +40,12 @@
                   <select name="categorie" class="form-select" id="">
                     <option value="">Seletionner catégorie</option>
                     
-                    {% if budgets.length == 0 %}
+                    {% comment %} {% if budgets.length == 0 %}
                     <a href="{% url 'add-category' %}"><option>Veuillez ajouter une nouvelle categorie</option></a>
-                    {% endif %}
+                    {% endif %} {% endcomment %}
                       
-                    {% for budget in budgets %}
-                      <option>{{ budget.category }}</option>
+                    {% for categorie in categories %}
+                      <option>{{ categorie.name }}</option>
                     {% endfor %}
                     </select>
                 </div>
