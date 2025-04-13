@@ -12,8 +12,8 @@ from .models import Depense
 
 @login_required
 def add_depense(request):
-    categories = Category.objects.all()
-    budgets = Budget.objects.all()
+    categories = Category.objects.filter(owner=request.user)
+    budgets = Budget.objects.filter(owner=request.user)
     context = {
             'categories': categories,
             'budgets': budgets
@@ -25,9 +25,9 @@ def add_depense(request):
         if not categorie:
             messages.info(request, "La categorie est obligatoire.")
             return redirect('add-depense')
-        if Budget.objects.get(category=categorie):
-            messages.info(request, "La catégorie existe")
-            return redirect('add-depense')
+        # if Category.objects.filter(name=categorie).filter(owner=request.user).exists():
+        #     messages.info(request, "La catégorie existe")
+        #     return redirect('add-depense')*
         if not montant:
             messages.info(request, "Le montant est obligatoire. ")
             return redirect('add-depense')
@@ -36,7 +36,7 @@ def add_depense(request):
             return redirect('add-depense')
         depense = Depense(owner=request.user, montant=montant, description=description, categorie=categorie)
         depense.save()
-        messages.success(request, "Votre dépense a été ajouté avec succè   s")
+        messages.success(request, "Votre dépense a été ajouté avec succès")
         return redirect('depenses')
     return render(request, "depense/add-depense.html", context)
 
@@ -50,7 +50,7 @@ def depenses(request):
 @login_required
 def update_depense(request, id):
     depense = Depense.objects.get(id=id)
-    categories = Category.objects.all()
+    categories = Category.objects.filter(owner=request.user)
     context = {
         'depense': depense,
         'categories': categories

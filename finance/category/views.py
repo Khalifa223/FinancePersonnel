@@ -16,7 +16,7 @@ def allCategory(request):
 def addCategory(request):
     if request.method == "POST":
         name = request.POST["name"]
-        if Category.objects.filter(name=name).exists():
+        if Category.objects.filter(name=name).filter(owner=request.user).exists():
             messages.error(request, "Cet nom de catégorie existe déjà")
             return redirect("add-category")
         if not name:

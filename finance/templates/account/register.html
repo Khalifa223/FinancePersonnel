@@ -52,9 +52,15 @@
                   </div> {% endcomment %}
 
                   <div class="col-12">
-                    <label for="yourPassword" class="form-label">Mot de passe</label>
+                    {% comment %} <label for="yourPassword" class="form-label">Mot de passe</label>
                     <input type="password" name="password" class="form-control" id="yourPassword" required>
-                    <div class="invalid-feedback">S'il vous plait entrer votre mot de passe</div>
+                    <div class="invalid-feedback">S'il vous plait entrer votre mot de passe</div> {% endcomment %}
+                    <label for="yourPassword" class="form-label">Mot de passe</label>
+                      <div class="input-group">
+                        <input type="password" name="password" class="form-control" id="yourPassword" required />
+                        <button type="button" class="btn btn-outline-secondary" onclick="togglePassword()" tabindex="-1"><i id="eyeIcon" class="bi bi-eye"></i></button>
+                        <div class="invalid-feedback">S'il vous plait entrer votre mot de passe!</div>
+                      </div>
                   </div>
 
                   {% comment %} <div class="col-12">
@@ -65,7 +71,7 @@
                     </div>
                   </div> {% endcomment %}
                   <div class="col-12">
-                    <button class="btn btn-primary w-100" type="submit">Créer compte</button>
+                    <button class="btn btn-primary w-100" type="submit">S'inscrire</button>
                   </div>
                   <div class="col-12">
                     <p class="small mb-0">Avez-vous déjà un compte? <a href="{% url 'login' %}">Se connecter</a></p>

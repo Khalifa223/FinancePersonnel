@@ -7,10 +7,13 @@ from depense.models import Depense
 
 class Budget(models.Model):
     owner = models.ForeignKey(to=User, on_delete=models.CASCADE)
-    category = models.CharField(max_length=255, unique=True)
+    category = models.CharField(max_length=255)
     montant = models.FloatField()
     date_debut = models.DateField(auto_now_add=True)
     date_fin = models.DateField(auto_now_add=False)
+    
+    class Meta:
+        unique_together = ('owner', 'category')  # ← La magie ici !
     
     def __str__(self):
         return f'{self.category} - {self.montant}Fcfa'
