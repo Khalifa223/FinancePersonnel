@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login,logout
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.views import PasswordChangeView
@@ -35,7 +36,7 @@ def register(request):
         except:
             pass
         User.objects.create_user(username=username, email=email, password=pass1)
-        messages.success(request, "L'utilisateur a ete creee avec success")
+        messages.success(request, "L'utilisateur a ete créée avec success")
         return redirect('login')
     return render(request, "account/register.html")
 
@@ -47,7 +48,7 @@ def loginView(request):
         user = authenticate(email=email, password=password)
         if user is not None:
             login(request, user)
-            # messages.success(request, "L'utilisateur connecte avec succes")
+            # messages.success(request, "L'utilisateur connecté avec succes")
             return redirect("home")
         else:
             messages.error(request, 'Votre email ou mot de passe est incorrect')
@@ -77,7 +78,7 @@ def index(request):
     # send_mail(
     #     "Accueil", #Title
     #     "Bienvenue FinancePersonnel", #Message
-    #     "settings.EMAIL_HOST_USER",
+    #     settings.EMAIL_HOST_USER,
     #     ['khalifacoders@gmail.com'], #receiver email
     #     fail_silently=False
     # )

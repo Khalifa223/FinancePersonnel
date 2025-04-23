@@ -102,7 +102,7 @@ def suivi_budget(request):
         # if details["reste"] < 0:
         #     send_mail(
         #         "Finance Personnel", #Title
-        #         f"Vous avez dépassé le budget    pour {budget.category}", #Message
+        #         f"Vous avez dépassé le budget pour {budget.category}", #Message
         #         settings.EMAIL_HOST_USER,
         #         ['khalifacoders@gmail.com'], #receiver email
         #         fail_silently=False
