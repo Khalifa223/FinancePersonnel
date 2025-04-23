@@ -79,7 +79,7 @@ def index(request):
     #     "Accueil", #Title
     #     "Bienvenue FinancePersonnel", #Message
     #     settings.EMAIL_HOST_USER,
-    #     ['khalifacoders@gmail.com'], #receiver email
+    #     [request.user.email], #receiver email
     #     fail_silently=False
     # )
     return render(request, "account/home.html", context)

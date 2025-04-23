@@ -70,21 +70,23 @@ def suivi_epargne(request):
 
     message = ""
     if epargne_mensuelle >= objectif.montant:
-        send_mail(
-            "Finance Personnel", #Title
-            "Objectif d'epargne atteint", #Message
-            "settings.EMAIL_HOST_USER",
-            [request.user.email], #receiver email    
-            fail_silently=False
-        )
+        pass
+        # send_mail(
+        #     "Finance Personnel", #Title
+        #     "Objectif d'epargne atteint", #Message
+        #     "settings.EMAIL_HOST_USER",
+        #     [request.user.email], #receiver email    
+        #     fail_silently=False
+        # )
     else :
-        send_mail(
-            "Finance Personnel", #Title
-            "Objectif d'épargne non atteint", #Message
-            "settings.EMAIL_HOST_USER",
-            [request.user.email], #receiver email
-            fail_silently=False
-        )
+        pass
+        # send_mail(
+        #     "Finance Personnel", #Title
+        #     "Objectif d'épargne non atteint", #Message
+        #     "settings.EMAIL_HOST_USER",
+        #     [request.user.email], #receiver email
+        #     fail_silently=False
+        # )
     # if request.method == 'POST':
     #     if 'montant' in request.POST:  # Ajouter une épargne
     #         montant = request.POST.get('montant')

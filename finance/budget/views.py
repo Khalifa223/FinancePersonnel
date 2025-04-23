@@ -99,14 +99,15 @@ def suivi_budget(request):
             "reste": details["reste"],
             "statut": details["statut"]
         })
-        # if details["reste"] < 0:
-        #     send_mail(
-        #         "Finance Personnel", #Title
-        #         f"Vous avez dépassé le budget pour {budget.category}", #Message
-        #         settings.EMAIL_HOST_USER,
-        #         ['khalifacoders@gmail.com'], #receiver email
-        #         fail_silently=False
-        #     )
+        if details["reste"] < 0:
+            pass
+            # send_mail(
+            #     "Finance Personnel", #Title
+            #     f"Vous avez dépassé le budget pour {budget.category}", #Message
+            #     settings.EMAIL_HOST_USER,
+            #     [request.user.email], #receiver email
+            #     fail_silently=False
+            # )
 
     context = {
         "suivi": suivi,
